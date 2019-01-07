@@ -6,21 +6,16 @@ import (
 	"os"
 )
 
-const default_addr string = "https://127.0.0.1:8200"
-
 func main() {
-	var vault_addr = flag.String("addr", "", "Vault address")
+	var vault_addr = flag.String("addr", "https://127.0.0.1:8200", "Vault address")
 	var insecure_ssl = flag.Bool("insecure-ssl", false, "Don't validate server SSL certificate")
+	var timeout = flag.Int("timeout", 15, "Connection timeout")
 
 	flag.Usage = showUsage
 
 	flag.Parse()
 
-	if *vault_addr == "" {
-		*vault_addr = default_addr
-	}
-
-	seal, err := FetchVaultState(vault_addr, *insecure_ssl, nil)
+	seal, err := FetchVaultState(vault_addr, *insecure_ssl, *timeout, nil)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(NAGIOS_UNKNOWN)

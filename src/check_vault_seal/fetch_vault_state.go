@@ -9,11 +9,12 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"time"
 )
 
 const UserAgent string = "check_vault_seal/1.0.0"
 
-func FetchVaultState(vault_url *string, insecure bool, ca *string) (VaultSealStatus, error) {
+func FetchVaultState(vault_url *string, insecure bool, timeout int, ca *string) (VaultSealStatus, error) {
 	var seal VaultSealStatus
 	var t *http.Transport
 	var parsed *url.URL
@@ -43,6 +44,7 @@ func FetchVaultState(vault_url *string, insecure bool, ca *string) (VaultSealSta
 	}
 
 	client := &http.Client{
+		Timeout:   time.Duration(timeout) * time.Second,
 		Transport: t,
 	}
 
