@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-const help string = `check_vault_seal version 1.0.1
+const help string = `check_vault_seal version 1.0.2
 Copyright (C) by Andreas Maus <maus@ypbind.de>
 This program comes with ABSOLUTELY NO WARRANTY.
 

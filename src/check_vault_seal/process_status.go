@@ -57,6 +57,10 @@ func ProcessStatus(n NagiosState) (int, string) {
 		if len(o_str) > 0 {
 			msg += "; " + o_str
 		}
+
+		if len(perfdata) > 0 {
+			msg += perfdata
+		}
 	} else if len(n.Ok) > 0 {
 		rc = NAGIOS_OK
 		msg = o_str
