@@ -10,12 +10,13 @@ func main() {
 	var vault_addr = flag.String("addr", "https://127.0.0.1:8200", "Vault address")
 	var insecure_ssl = flag.Bool("insecure-ssl", false, "Don't validate server SSL certificate")
 	var timeout = flag.Int("timeout", 15, "Connection timeout")
+	var ca_cert = flag.String("ca-cert", "", "CA certificate")
 
 	flag.Usage = showUsage
 
 	flag.Parse()
 
-	seal, err := FetchVaultState(vault_addr, *insecure_ssl, *timeout, nil)
+	seal, err := FetchVaultState(vault_addr, *insecure_ssl, *timeout, ca_cert)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(NAGIOS_UNKNOWN)

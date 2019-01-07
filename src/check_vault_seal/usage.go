@@ -14,6 +14,8 @@ Usage: check_vault_seal --addr <vault_address>
     --addr <vault_address>  Address for accessing the Vault API.
                             Default: https://127.0.0.1:8200
 
+    --ca-cert <file>        Use <file> as CA certificate for servers certificate
+
     --insecure-ssl          Don't validate server certificate.
 
     --timeout <timeout>     Connection timeout in seconds.

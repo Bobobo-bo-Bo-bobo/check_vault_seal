@@ -2,6 +2,7 @@ package main
 
 import (
 	"crypto/tls"
+	"crypto/x509"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -21,6 +22,7 @@ func FetchVaultState(vault_url *string, insecure bool, timeout int, ca *string) 
 	var reader io.Reader
 	var raw []byte
 	var state_url string
+	var certpool *x509.CertPool
 
 	parsed, err := url.Parse(*vault_url)
 	if err != nil {
@@ -28,14 +30,20 @@ func FetchVaultState(vault_url *string, insecure bool, timeout int, ca *string) 
 	}
 
 	if parsed.Scheme == "https" {
-		if insecure {
-			t = &http.Transport{
-				TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		if ca != nil && *ca != "" {
+			cacert, err := ioutil.ReadFile(*ca)
+			if err != nil {
+				return seal, err
 			}
-		} else {
-			t = &http.Transport{
-				TLSClientConfig: &tls.Config{},
-			}
+			certpool = x509.NewCertPool()
+			certpool.AppendCertsFromPEM(cacert)
+		}
+
+		t = &http.Transport{
+			TLSClientConfig: &tls.Config{
+				RootCAs:            certpool,
+				InsecureSkipVerify: insecure,
+			},
 		}
 	} else if parsed.Scheme == "http" {
 		t = &http.Transport{}
