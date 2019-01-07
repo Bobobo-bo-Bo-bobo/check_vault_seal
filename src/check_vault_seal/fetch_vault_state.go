@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-const UserAgent string = "check_vault_seal/1.0.0"
+const UserAgent string = "check_vault_seal/1.0.1"
 
 func FetchVaultState(vault_url *string, insecure bool, timeout int, ca *string) (VaultSealStatus, error) {
 	var seal VaultSealStatus

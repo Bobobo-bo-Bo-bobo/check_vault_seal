@@ -2,12 +2,16 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 )
 
 func ParseVaultState(v VaultSealStatus) NagiosState {
 	var perf_str string
 	var max_str string
 	var min_str = "0"
+	var w_str string
+	var c_str = "0"
+
 	var state = NagiosState{
 		Critical: make([]string, 0),
 		Warning:  make([]string, 0),
@@ -19,7 +23,8 @@ func ParseVaultState(v VaultSealStatus) NagiosState {
 	if !v.Initialized {
 		state.Unknown = append(state.Unknown, "Vault is not initialised")
 		max_str = "0"
-		perf_str, _ = MakePerfDataString("unseal_keys", "0", nil, nil, nil, &min_str, &max_str)
+		c_str = "0"
+		perf_str, _ = MakePerfDataString("unseal_keys", "0", nil, &w_str, &c_str, &min_str, &max_str)
 		state.PerfData = append(state.PerfData, perf_str)
 		return state
 	}
@@ -34,7 +39,9 @@ func ParseVaultState(v VaultSealStatus) NagiosState {
 		state.Ok = append(state.Ok, "Vault is unsealed")
 	}
 
-	perf_str, _ = MakePerfDataString("unseal_keys", string(v.Progress), nil, nil, nil, &min_str, &max_str)
+	max_str = strconv.Itoa(v.NumberOfSealKeys)
+	w_str = strconv.Itoa(v.RequiredKeysForUnseal - 1)
+	perf_str, _ = MakePerfDataString("unseal_keys", strconv.Itoa(v.Progress), nil, &w_str, &c_str, &min_str, &max_str)
 	state.PerfData = append(state.PerfData, perf_str)
 	return state
 }

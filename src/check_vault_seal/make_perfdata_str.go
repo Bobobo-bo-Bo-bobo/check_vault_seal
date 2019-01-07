@@ -81,7 +81,7 @@ func MakePerfDataString(label string, val string, uom *string, warn *string, cri
 		_max = strings.TrimSpace(*max)
 	}
 
-	perfdata = fmt.Sprintf("'%s'=%s%s;%s;%s;%s;%s", _lbl, _uom, _val, _warn, _crit, _min, _max)
+	perfdata = fmt.Sprintf("'%s'=%s%s;%s;%s;%s;%s", _lbl, _val, _uom, _warn, _crit, _min, _max)
 
 	// remove trailing semicolon(s)
 	perfdata = strings.TrimRight(perfdata, ";")
