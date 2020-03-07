@@ -1,3 +1,7 @@
+**_Note:_** Because I'm running my own servers for serveral years, main development is done at at https://git.ypbind.de/cgit/check_vault_seal/
+
+----
+
 # Nagios check to validate the sealing state of a Vault
 ## Preface
 [Hashicorp Vault](https://www.vaultproject.io) provides a secure mechanism for storing private data. Upon a server start
